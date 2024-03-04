@@ -1,0 +1,30 @@
+extends layout 
+
+block content
+  h1= title 
+  form(method="post")
+    .form-group 
+      .inputContainer
+        label(for='fname') First Name:
+        input#fname.form-control(type='text', name='fname', required, value=(undefined === lastName ? '' : firstName))
+      .inputContainer
+        label(for='lname') Last Name:
+        input#lname.form-control(type='text', name='lname', required, value=(undefined === lastName ? '' : lastName))
+      .inputContainer
+        label(for='username') Username:
+        input#username.form-control(type='text', name='username', required, value=(undefined === username ? '' : username))
+      .inputContainer
+        label(for='password') Password:
+        input#password.form-control(type='text', name='password', required, value=(undefined === password ? '' : password))
+      .inputContainer
+        label(for='confirmPassword') Confirm Password:
+        input#confirmPassword.form-control(type='text', name='confirmPassword', required)
+      //- label(for='text') Write The Post Here:
+      //- textarea#text.form-control(name="text", cols="50", rows="4") #{undefined === text ? '' : text}
+      
+    button.btn.btn-primary(type='submit') Submit
+    
+    if errors 
+      ul 
+        for error in errors 
+         li!= error.msg 
