@@ -27,7 +27,6 @@ exports.create_post = [
     .escape()
     .custom(async (value) => {
       const alreadyExist = await User.findOne({ username: value }).exec();
-      console.log(1111111111, alreadyExist);
       if (alreadyExist) {
         throw new Error('this username is already taken');
       } else {
@@ -41,7 +40,7 @@ exports.create_post = [
   body('confirmPassword', 'passwords does not match')
     .trim()
     .escape()
-    .custom(async (value, { req }) => {
+    .custom((value, { req }) => {
       const match = value === req.body.password;
       if (!match) {
         throw new Error('Passwords does not match');
@@ -86,10 +85,10 @@ passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
       const user = await User.findOne({ username: username });
-      const match = await bcrypt.compare(password, user.password);
       if (!user) {
         return done(null, false, { message: 'Incorrect username' });
       }
+      const match = await bcrypt.compare(password, user.password);
       if (!match) {
         return done(null, false, { message: 'Incorrect password' });
       }
@@ -112,3 +111,22 @@ passport.deserializeUser(async (id, done) => {
     return done(err);
   }
 });
+
+exports.logIn_get = (req, res, next) => {
+  res.render('log_in', {
+    title: 'Log In',
+  });
+};
+
+
+exports.logIn_post = [
+  passport.authenticate('local', {
+    successRedirect: '/',
+  }),
+  (req, res, next) => {
+    const error = new Error('username or password is incorrect');
+    res.render('sign_up', {
+      error: error,
+    });
+  },
+];
