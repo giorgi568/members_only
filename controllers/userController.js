@@ -26,7 +26,8 @@ exports.create_post = [
     .isLength({ min: 1 })
     .escape()
     .custom(async (value) => {
-      const alreadyExist = await User.find({ username: value }).exec();
+      const alreadyExist = await User.findOne({ username: value }).exec();
+      console.log(1111111111, alreadyExist);
       if (alreadyExist) {
         throw new Error('this username is already taken');
       } else {
@@ -40,7 +41,7 @@ exports.create_post = [
   body('confirmPassword', 'passwords does not match')
     .trim()
     .escape()
-    .custom(async (value) => {
+    .custom(async (value, { req }) => {
       const match = value === req.body.password;
       if (!match) {
         throw new Error('Passwords does not match');
@@ -57,19 +58,21 @@ exports.create_post = [
           firstName: req.body.fname,
           lastName: req.body.lname,
           username: req.body.username,
-          password: req.body.password,
+          password: hashedPassword,
+          membership: false,
         });
 
         if (!errors.isEmpty()) {
+          console.log(errors);
           res.render('sign_up', {
             title: 'Sign-Up',
-            fname: user.firstName,
-            lname: user.lastName,
+            firstName: user.firstName,
+            lastName: user.lastName,
             username: user.username,
-            password: user.password,
+            errors: errors.array(),
           });
         } else {
-          await item.save();
+          await user.save();
           res.redirect('/');
         }
       });
@@ -78,3 +81,34 @@ exports.create_post = [
     }
   },
 ];
+
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await User.findOne({ username: username });
+      const match = await bcrypt.compare(password, user.password);
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username' });
+      }
+      if (!match) {
+        return done(null, false, { message: 'Incorrect password' });
+      }
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+});
