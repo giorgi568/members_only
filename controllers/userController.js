@@ -84,7 +84,7 @@ exports.create_post = [
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
-      console.log(username, password)
+      console.log(username, password);
       const user = await User.findOne({ username: username });
       if (!user) {
         return done(null, false, { message: 'Incorrect username' });
@@ -114,10 +114,13 @@ passport.deserializeUser(async (id, done) => {
 });
 
 exports.logIn_get = (req, res, next) => {
-  console.log(req.session.messages)
+  const error =
+    undefined === req.session.messages
+      ? undefined
+      : req.session.messages.slice(-1);
   res.render('log_in', {
     title: 'Log In',
-    error: req.session.messages.slice(-1),
+    error: error,
   });
 };
 
