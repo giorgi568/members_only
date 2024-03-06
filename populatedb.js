@@ -48,10 +48,11 @@ async function userCreate(
   console.log('added user: ' + username);
 }
 
-async function messageCreate(index, title, text) {
+async function messageCreate(index, title, text, author) {
   const message = new Message({
     title: title,
     text: text,
+    author: author,
   });
 
   await message.save();
@@ -75,12 +76,14 @@ async function createMessages() {
     messageCreate(
       0,
       'future of the union',
-      'future of our dear union is bright and full of hope, inspiring!'
+      'future of our dear union is bright and full of hope, inspiring!',
+      users[0]
     ),
     messageCreate(
       1,
       'state of farmers',
-      'big banks throwing working people off their land(its all they have).'
+      'big banks throwing working people off their land(its all they have).',
+      users[1]
     ),
   ]);
 }

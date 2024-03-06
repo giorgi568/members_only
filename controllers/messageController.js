@@ -3,11 +3,11 @@ const { body, validationResult } = require('express-validator');
 
 exports.messageList_get = async (req, res, next) => {
   try {
-    const messages = await Message.find().exec();
+    const messages = await Message.find().populate('author').exec();
     res.render('index', {
       title: 'MembersOnly',
       user: req.user,
-      messages: messages
+      messages: messages,
     });
   } catch (err) {
     return next(err);

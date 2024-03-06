@@ -39,3 +39,11 @@ form{
 h1{
   padding-bottom: 2rem;
 }
+
+.msgContainer{
+  width: 80%;
+}
+.msgInfo{
+  display: flex;
+  justify-content: space-between;
+}

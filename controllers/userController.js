@@ -72,7 +72,7 @@ exports.create_post = [
           });
         } else {
           await user.save();
-          res.redirect('/');
+          res.redirect('/log-in');
         }
       });
     } catch (err) {
@@ -131,5 +131,52 @@ exports.logIn_post = [
   }),
   (req, res, next) => {
     res.redirect('/');
+  },
+];
+
+exports.logOut_get = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/');
+  });
+};
+
+exports.membership_get = (req, res, next) => {
+  res.render('membership', {
+    user: req.user,
+  });
+};
+
+exports.membership_post = [
+  body('riddle', 'answer is incorrect')
+    .trim()
+    .escape()
+    .custom((value) => {
+      if (value.toLowerCase() !== 'friend') {
+        throw new Error('answer is incorrect');
+      } else {
+        return true;
+      }
+    }),
+
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.render('membership', {
+          user: req.user,
+          errors: errors.array(),
+        });
+      } else if (req.user) {
+        const user = await User.findById(req.user._id).exec();
+        user.membership = true;
+        await user.save();
+        res.redirect('/');
+      }
+    } catch (err) {
+      return next(err);
+    }
   },
 ];

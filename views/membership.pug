@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+  h1 Get Membership
+  if user
+    if user.membership 
+      p You Already Have The Membership 
+    else 
+      form(method="POST")
+        .form-group
+          label(for='riddle') Write Password Friend And Get Membership:
+          input#riddle.form-control(type='text', name='riddle', required)
+        button.btn.btn-primary(type='submit') Submit
+      if errors 
+        each error in errors 
+          p#err= error.msg 
+  else 
+    p You Are Not Loged In

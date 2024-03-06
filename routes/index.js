@@ -12,4 +12,9 @@ router.post('/sign-up', userController.create_post);
 router.get('/log-in', userController.logIn_get);
 router.post('/log-in', userController.logIn_post);
 
+router.get('/log-out', userController.logOut_get);
+
+router.get('/membership', userController.membership_get);
+router.post('/membership', userController.membership_post);
+
 module.exports = router;

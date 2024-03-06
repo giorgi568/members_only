@@ -4,10 +4,23 @@ block content
   h1= title
   if user 
     p Welcome Back #{user.username}
+    a(href="/log-out") Log Out
   else 
     p You Are Not Loged In 
     a(href="/log-in") Log In
     a(href="/sign-up") Sign Up   
   ul 
-  each message in messages 
-    li= message.text
+  each message in messages
+    .msgContainer
+      h4= message.title
+      p#msgText= message.text
+      .msgInfo
+        if user && user.membership 
+          p= message.timestamp_formatted 
+        else 
+          p Get Membership To See Date 
+        if user && user.membership
+          p #{message.author.username} 
+            i (#{message.author.fullName})
+        else 
+          p Get Membership To See Author
