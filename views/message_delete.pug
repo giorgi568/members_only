@@ -1,0 +1,13 @@
+extends layout 
+
+block content
+  if user
+    if user.membership 
+      h3 Are You Sure You Want To Delete The Message?
+      form(method="POST")
+        button.btn.btn-danger(type='submit') Yes
+    else 
+      p Only Members Can Delete Messages
+  else 
+    p You Are Not Loged In
+  

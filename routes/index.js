@@ -20,4 +20,7 @@ router.post('/membership', userController.membership_post);
 router.get('/new-message', messageController.create_get);
 router.post('/new-message', messageController.create_post);
 
+router.get('/delete-message/:id', messageController.delete_get);
+router.post('/delete-message/:id', messageController.delete_post);
+
 module.exports = router;

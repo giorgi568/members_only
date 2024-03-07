@@ -16,6 +16,6 @@ block content
     if errors 
       ul 
         for error in errors 
-          li!= error.msg 
+          li.err!= error.msg 
   else 
     p You Are Not Loged In
