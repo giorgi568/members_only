@@ -11,7 +11,19 @@ const MessageSchema = new Schema({
 });
 
 MessageSchema.virtual('timestamp_formatted').get(function () {
-  return DateTime.fromJSDate(this.timestamp).toLocaleString(DateTime.DATETIME_MED);
+  return DateTime.fromJSDate(this.timestamp).toLocaleString(
+    DateTime.DATETIME_MED
+  );
 });
+
+//indexes for search
+MessageSchema.index(
+  { text: 'text', title: 'text' },
+  {
+    name: 'TextIndex',
+    default_language: 'none', // Set the default language for text analysis
+    stopwords: [], // Specify custom stop words
+  }
+);
 
 module.exports = mongoose.model('Message', MessageSchema);

@@ -22,7 +22,7 @@ nav {
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
-  box-shadow: 15px 0px 100px 0px #864AF9;
+  box-shadow: 15px 0px 100px 0px #864af9;
   z-index: 1;
 }
 .main_content {
@@ -44,6 +44,20 @@ label {
   align-items: center;
   justify-content: center;
 }
+.inputSearchContainer {
+  height: 50px;
+}
+.input-search {
+  min-width: 300px;
+  height: 100%;
+}
+.btn-search {
+  height: 100%;
+  border-radius: 0px !important;
+  background-color: rgb(248, 229, 89, 0.8) !important;
+  border-color: #f8e559 !important;
+  color: black !important;
+}
 form {
   width: 500px;
   text-align: center;
@@ -56,6 +70,8 @@ h1 {
   width: 100%;
   box-sizing: border-box;
   padding: 30px;
+  border: 1px solid;
+  border-color: rgb(248, 229, 89, 0.8);
 }
 .msgContainer:hover {
   background-color: rgb(248, 229, 89, 0.8);

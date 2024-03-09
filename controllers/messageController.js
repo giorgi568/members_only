@@ -3,7 +3,10 @@ const { body, validationResult } = require('express-validator');
 
 exports.messageList_get = async (req, res, next) => {
   try {
-    const messages = await Message.find().populate('author').exec();
+    const messages = await Message.find()
+      .sort({ timestamp: -1 })
+      .populate('author')
+      .exec();
     res.render('index', {
       title: 'MembersOnly',
       user: req.user,
@@ -13,6 +16,26 @@ exports.messageList_get = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.messagesFiltered_get = [
+  async (req, res, next) => {
+    try {
+      console.log(11111, req.query);
+      const messages = await Message.find({
+        $text: { $search: req.query.search },
+      })
+        .populate('author')
+        .exec();
+      res.render('index', {
+        title: 'MembersOnly',
+        user: req.user,
+        messages: messages,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
 
 exports.create_get = (req, res, next) => {
   res.render('message_form', {

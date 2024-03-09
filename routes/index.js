@@ -5,6 +5,8 @@ const messageController = require('../controllers/messageController');
 
 /* GET home page. */
 router.get('/', messageController.messageList_get);
+//for search result
+router.get('/messages-filtered', messageController.messagesFiltered_get);
 
 router.get('/sign-up', userController.create_get);
 router.post('/sign-up', userController.create_post);
